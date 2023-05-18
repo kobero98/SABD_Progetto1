@@ -1,9 +1,8 @@
 version: '3.9'
 services:
-  
+
   hdfs_master:
-    hostname: master
-    container_name: master_hdfs
+    container_name: master
     build: 
       context: .
       dockerfile: ./DockerFile/HDFS/master
@@ -17,8 +16,7 @@ services:
       - hdfs_slave2
       - hdfs_slave3
   hdfs_slave1:
-    hostname: slave1
-    container_name: slave1_hdfs
+    container_name: slave1
     image: matnar/hadoop
     tty: true
     ports:
@@ -26,8 +24,7 @@ services:
     networks:
       - hadoop_network
   hdfs_slave2:
-    hostname: slave2
-    container_name: slave2_hdfs
+    container_name: slave2
     image: matnar/hadoop
     tty: true
     ports:
@@ -35,14 +32,24 @@ services:
     networks:
       - hadoop_network
   hdfs_slave3:
-    hostname: slave3
-    container_name: slave3_hdfs
+    container_name: slave3
     image: matnar/hadoop
     tty: true
     ports:
       - 9862:9864
     networks:
       - hadoop_network
+  nifi:
+    hostname: nifi
+    container_name: nifi
+    build: 
+      context: .
+      dockerfile: ./DockerFile/NIFI/Dockerfile
+    tty: true
+    ports:
+      - 8443:8443
+    networks:
+      - hadoop_network    
 networks:
   hadoop_network:
     name: hadoop_network

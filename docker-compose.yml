@@ -1,59 +1,88 @@
-version: '3.9'
+version: "3.3"
 services:
+#  hdfs_master:
+#   container_name: master
+#      #build:
+#      #      context: .
+#      #      dockerfile: ./DockerFile/HDFS/master
+#    image: matnar/hadoop
+#    tty: true
+#    ports:
+#      - 9870:9870
+#      - 54310:54310
+#    volumes:
+#      - ./DockerFile/HDFS:/home/data 
+#    networks:
+#      - hadoop_network
+#    depends_on:
+#      - hdfs_slave1
+#      - hdfs_slave2
+#      - hdfs_slave3
+#  hdfs_slave1:
+#    container_name: slave1
+#    image: matnar/hadoop
+#    tty: true
+#    ports:
+#      - 9864:9864
+#    networks:
+#      - hadoop_network
+#  hdfs_slave2:
+#    container_name: slave2
+#    image: matnar/hadoop
+#    tty: true
+#    ports:
+#      - 9863:9864 
+#    networks:
+#      - hadoop_network
+#  hdfs_slave3:
+#    container_name: slave3
+#    image: matnar/hadoop
+#    tty: true
+#    ports:
+#      - 9862:9864
+#    networks:
+#      - hadoop_network
+#  nifi:
+#    hostname: nifi
+#    container_name: nifi
+#    image: apache/nifi:latest
+#    volumes:
+#      - ./DockerFile/NIFI:/opt/nifi/nifi-current/Data
+#    ports:
+#      - 8443:8443
+#    networks:
+#      - hadoop_network    
 
-  hdfs_master:
-    container_name: master
-      #build:
-      #      context: .
-      #      dockerfile: ./DockerFile/HDFS/master
-    image: matnar/hadoop
-    tty: true
+  spark-master:
+    image: cluster-apache-spark:3.0.2
     ports:
-      - 9870:9870
-      - 54310:54310
-    volumes:
-      - ./DockerFile/HDFS:/home/data 
+      - "9090:8080"
+      - "7077:7077"
+    environment:
+      - SPARK_LOCAL_IP=spark-master
+      - SPARK_WORKLOAD=master
     networks:
       - hadoop_network
+  spark-worker-a:
+    image: cluster-apache-spark:3.0.2
+    ports:
+      - "9091:8080"
+      - "7000:7000"
     depends_on:
-      - hdfs_slave1
-      - hdfs_slave2
-      - hdfs_slave3
-  hdfs_slave1:
-    container_name: slave1
-    image: matnar/hadoop
-    tty: true
-    ports:
-      - 9864:9864
+      - spark-master
+    environment:
+      - SPARK_MASTER=spark://spark-master:7077
+      - SPARK_WORKER_CORES=1
+      - SPARK_WORKER_MEMORY=1G
+      - SPARK_DRIVER_MEMORY=1G
+      - SPARK_EXECUTOR_MEMORY=1G
+      - SPARK_WORKLOAD=worker
+      - SPARK_LOCAL_IP=spark-worker-a
     networks:
       - hadoop_network
-  hdfs_slave2:
-    container_name: slave2
-    image: matnar/hadoop
-    tty: true
-    ports:
-      - 9863:9864 
-    networks:
-      - hadoop_network
-  hdfs_slave3:
-    container_name: slave3
-    image: matnar/hadoop
-    tty: true
-    ports:
-      - 9862:9864
-    networks:
-      - hadoop_network
-  nifi:
-    hostname: nifi
-    container_name: nifi
-    image: apache/nifi:latest
-    volumes:
-      - ./DockerFile/NIFI:/opt/nifi/nifi-current/Data
-    ports:
-      - 8443:8443
-    networks:
-      - hadoop_network    
+  
 networks:
   hadoop_network:
     name: hadoop_network
     driver: bridge
+

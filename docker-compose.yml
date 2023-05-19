@@ -3,12 +3,16 @@ services:
 
   hdfs_master:
     container_name: master
-    build: 
-      context: .
-      dockerfile: ./DockerFile/HDFS/master
+      #build:
+      #      context: .
+      #      dockerfile: ./DockerFile/HDFS/master
+    image: matnar/hadoop
     tty: true
     ports:
       - 9870:9870
+      - 54310:54310
+    volumes:
+      - ./DockerFile/HDFS:/home/data 
     networks:
       - hadoop_network
     depends_on:
@@ -42,10 +46,9 @@ services:
   nifi:
     hostname: nifi
     container_name: nifi
-    build: 
-      context: .
-      dockerfile: ./DockerFile/NIFI/Dockerfile
-    tty: true
+    image: apache/nifi:latest
+    volumes:
+      - ./DockerFile/NIFI:/opt/nifi/nifi-current/Data
     ports:
       - 8443:8443
     networks:

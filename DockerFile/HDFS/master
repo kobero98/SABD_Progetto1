@@ -2,4 +2,4 @@ FROM matnar/hadoop
 WORKDIR $HADOOP_HOME
 COPY ./DockerFile/HDFS/avvio_hdfs.sh ./avvio.sh
 RUN ["chmod", "777", "./avvio.sh"] 
-ENTRYPOINT [ "./avvio.sh" ]
+CMD [ "./avvio.sh" ]

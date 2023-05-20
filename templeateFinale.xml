@@ -1,14 +1,115 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <template encoding-version="1.3">
-    <description>test di salvataggio di un templeate che filtra sia le colonne inutili che l'header</description>
-    <groupId>33492b1c-0188-1000-9fad-9484e3a58093</groupId>
-    <name>test2</name>
+    <description></description>
+    <groupId>39c3ef1f-0188-1000-f260-b31cb7e7753f</groupId>
+    <name>templeateFinale</name>
     <snippet>
+        <connections>
+            <id>4bc1bbb3-bc29-3613-0000-000000000000</id>
+            <parentGroupId>daf56c04-7497-3ce5-0000-000000000000</parentGroupId>
+            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+            <destination>
+                <groupId>daf56c04-7497-3ce5-0000-000000000000</groupId>
+                <id>6bb771d3-b1cf-37d2-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </destination>
+            <flowFileExpiration>0 sec</flowFileExpiration>
+            <labelIndex>1</labelIndex>
+            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+            <name>match</name>
+            <selectedRelationships>match</selectedRelationships>
+            <selectedRelationships>matched</selectedRelationships>
+            <source>
+                <groupId>daf56c04-7497-3ce5-0000-000000000000</groupId>
+                <id>bda6fac4-fbf3-34a9-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </source>
+            <zIndex>0</zIndex>
+        </connections>
+        <connections>
+            <id>5045f224-ce3e-372f-0000-000000000000</id>
+            <parentGroupId>daf56c04-7497-3ce5-0000-000000000000</parentGroupId>
+            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+            <destination>
+                <groupId>daf56c04-7497-3ce5-0000-000000000000</groupId>
+                <id>38e756d2-a4a5-3e24-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </destination>
+            <flowFileExpiration>0 sec</flowFileExpiration>
+            <labelIndex>1</labelIndex>
+            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+            <name></name>
+            <selectedRelationships>Response</selectedRelationships>
+            <source>
+                <groupId>daf56c04-7497-3ce5-0000-000000000000</groupId>
+                <id>e53389ac-ffe0-3e81-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </source>
+            <zIndex>0</zIndex>
+        </connections>
+        <connections>
+            <id>5490e673-3a2a-37b5-0000-000000000000</id>
+            <parentGroupId>daf56c04-7497-3ce5-0000-000000000000</parentGroupId>
+            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+            <destination>
+                <groupId>daf56c04-7497-3ce5-0000-000000000000</groupId>
+                <id>6edbaa0a-95a3-3fee-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </destination>
+            <flowFileExpiration>0 sec</flowFileExpiration>
+            <labelIndex>1</labelIndex>
+            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+            <name></name>
+            <selectedRelationships>success</selectedRelationships>
+            <source>
+                <groupId>daf56c04-7497-3ce5-0000-000000000000</groupId>
+                <id>38e756d2-a4a5-3e24-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </source>
+            <zIndex>0</zIndex>
+        </connections>
+        <connections>
+            <id>5f571ea4-39ba-346e-0000-000000000000</id>
+            <parentGroupId>daf56c04-7497-3ce5-0000-000000000000</parentGroupId>
+            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+            <destination>
+                <groupId>daf56c04-7497-3ce5-0000-000000000000</groupId>
+                <id>bda6fac4-fbf3-34a9-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </destination>
+            <flowFileExpiration>0 sec</flowFileExpiration>
+            <labelIndex>1</labelIndex>
+            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+            <name></name>
+            <selectedRelationships>success</selectedRelationships>
+            <source>
+                <groupId>daf56c04-7497-3ce5-0000-000000000000</groupId>
+                <id>6edbaa0a-95a3-3fee-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </source>
+            <zIndex>0</zIndex>
+        </connections>
         <processors>
-            <id>25405f07-bfd2-356c-0000-000000000000</id>
-            <parentGroupId>79b28a79-9820-3793-0000-000000000000</parentGroupId>
+            <id>38e756d2-a4a5-3e24-0000-000000000000</id>
+            <parentGroupId>daf56c04-7497-3ce5-0000-000000000000</parentGroupId>
             <position>
-                <x>720.0</x>
+                <x>424.0</x>
                 <y>0.0</y>
             </position>
             <bundle>
@@ -156,16 +257,243 @@
                 <name>success</name>
                 <retry>false</retry>
             </relationships>
-            <state>RUNNING</state>
+            <state>STOPPED</state>
             <style/>
             <type>org.apache.nifi.processors.standard.ReplaceText</type>
         </processors>
         <processors>
-            <id>4c41b6ae-c43f-3ae4-0000-000000000000</id>
-            <parentGroupId>79b28a79-9820-3793-0000-000000000000</parentGroupId>
+            <id>6bb771d3-b1cf-37d2-0000-000000000000</id>
+            <parentGroupId>daf56c04-7497-3ce5-0000-000000000000</parentGroupId>
             <position>
-                <x>712.0</x>
-                <y>248.0</y>
+                <x>0.0</x>
+                <y>184.0</y>
+            </position>
+            <bundle>
+                <artifact>nifi-hadoop-nar</artifact>
+                <group>org.apache.nifi</group>
+                <version>1.21.0</version>
+            </bundle>
+            <config>
+                <backoffMechanism>PENALIZE_FLOWFILE</backoffMechanism>
+                <bulletinLevel>WARN</bulletinLevel>
+                <comments></comments>
+                <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                <descriptors>
+                    <entry>
+                        <key>Hadoop Configuration Resources</key>
+                        <value>
+                            <name>Hadoop Configuration Resources</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>kerberos-credentials-service</key>
+                        <value>
+                            <identifiesControllerService>org.apache.nifi.kerberos.KerberosCredentialsService</identifiesControllerService>
+                            <name>kerberos-credentials-service</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>kerberos-user-service</key>
+                        <value>
+                            <identifiesControllerService>org.apache.nifi.kerberos.KerberosUserService</identifiesControllerService>
+                            <name>kerberos-user-service</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Kerberos Principal</key>
+                        <value>
+                            <name>Kerberos Principal</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Kerberos Keytab</key>
+                        <value>
+                            <name>Kerberos Keytab</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Kerberos Password</key>
+                        <value>
+                            <name>Kerberos Password</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Kerberos Relogin Period</key>
+                        <value>
+                            <name>Kerberos Relogin Period</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Additional Classpath Resources</key>
+                        <value>
+                            <name>Additional Classpath Resources</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Directory</key>
+                        <value>
+                            <name>Directory</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Conflict Resolution Strategy</key>
+                        <value>
+                            <name>Conflict Resolution Strategy</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>writing-strategy</key>
+                        <value>
+                            <name>writing-strategy</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Block Size</key>
+                        <value>
+                            <name>Block Size</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>IO Buffer Size</key>
+                        <value>
+                            <name>IO Buffer Size</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Replication</key>
+                        <value>
+                            <name>Replication</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Permissions umask</key>
+                        <value>
+                            <name>Permissions umask</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Remote Owner</key>
+                        <value>
+                            <name>Remote Owner</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Remote Group</key>
+                        <value>
+                            <name>Remote Group</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Compression codec</key>
+                        <value>
+                            <name>Compression codec</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Ignore Locality</key>
+                        <value>
+                            <name>Ignore Locality</name>
+                        </value>
+                    </entry>
+                </descriptors>
+                <executionNode>ALL</executionNode>
+                <lossTolerant>false</lossTolerant>
+                <maxBackoffPeriod>10 mins</maxBackoffPeriod>
+                <penaltyDuration>30 sec</penaltyDuration>
+                <properties>
+                    <entry>
+                        <key>Hadoop Configuration Resources</key>
+                        <value>Data/hdfs-site.xml,Data/core-site.xml</value>
+                    </entry>
+                    <entry>
+                        <key>kerberos-credentials-service</key>
+                    </entry>
+                    <entry>
+                        <key>kerberos-user-service</key>
+                    </entry>
+                    <entry>
+                        <key>Kerberos Principal</key>
+                    </entry>
+                    <entry>
+                        <key>Kerberos Keytab</key>
+                    </entry>
+                    <entry>
+                        <key>Kerberos Password</key>
+                    </entry>
+                    <entry>
+                        <key>Kerberos Relogin Period</key>
+                        <value>4 hours</value>
+                    </entry>
+                    <entry>
+                        <key>Additional Classpath Resources</key>
+                    </entry>
+                    <entry>
+                        <key>Directory</key>
+                        <value>/cartellaNIFI</value>
+                    </entry>
+                    <entry>
+                        <key>Conflict Resolution Strategy</key>
+                        <value>replace</value>
+                    </entry>
+                    <entry>
+                        <key>writing-strategy</key>
+                        <value>writeAndRename</value>
+                    </entry>
+                    <entry>
+                        <key>Block Size</key>
+                    </entry>
+                    <entry>
+                        <key>IO Buffer Size</key>
+                    </entry>
+                    <entry>
+                        <key>Replication</key>
+                    </entry>
+                    <entry>
+                        <key>Permissions umask</key>
+                    </entry>
+                    <entry>
+                        <key>Remote Owner</key>
+                    </entry>
+                    <entry>
+                        <key>Remote Group</key>
+                    </entry>
+                    <entry>
+                        <key>Compression codec</key>
+                        <value>NONE</value>
+                    </entry>
+                    <entry>
+                        <key>Ignore Locality</key>
+                        <value>false</value>
+                    </entry>
+                </properties>
+                <retryCount>10</retryCount>
+                <runDurationMillis>0</runDurationMillis>
+                <schedulingPeriod>0 sec</schedulingPeriod>
+                <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                <yieldDuration>1 sec</yieldDuration>
+            </config>
+            <executionNodeRestricted>false</executionNodeRestricted>
+            <name>PutHDFS</name>
+            <relationships>
+                <autoTerminate>true</autoTerminate>
+                <name>failure</name>
+                <retry>false</retry>
+            </relationships>
+            <relationships>
+                <autoTerminate>true</autoTerminate>
+                <name>success</name>
+                <retry>false</retry>
+            </relationships>
+            <state>RUNNING</state>
+            <style/>
+            <type>org.apache.nifi.processors.hadoop.PutHDFS</type>
+        </processors>
+        <processors>
+            <id>6edbaa0a-95a3-3fee-0000-000000000000</id>
+            <parentGroupId>daf56c04-7497-3ce5-0000-000000000000</parentGroupId>
+            <position>
+                <x>816.0</x>
+                <y>0.0</y>
             </position>
             <bundle>
                 <artifact>nifi-standard-nar</artifact>
@@ -312,13 +640,134 @@
                 <name>success</name>
                 <retry>false</retry>
             </relationships>
-            <state>RUNNING</state>
+            <state>STOPPED</state>
             <style/>
             <type>org.apache.nifi.processors.standard.ReplaceText</type>
         </processors>
         <processors>
-            <id>52751759-ab7a-39ae-0000-000000000000</id>
-            <parentGroupId>79b28a79-9820-3793-0000-000000000000</parentGroupId>
+            <id>bda6fac4-fbf3-34a9-0000-000000000000</id>
+            <parentGroupId>daf56c04-7497-3ce5-0000-000000000000</parentGroupId>
+            <position>
+                <x>416.0</x>
+                <y>176.0</y>
+            </position>
+            <bundle>
+                <artifact>nifi-standard-nar</artifact>
+                <group>org.apache.nifi</group>
+                <version>1.21.0</version>
+            </bundle>
+            <config>
+                <backoffMechanism>PENALIZE_FLOWFILE</backoffMechanism>
+                <bulletinLevel>WARN</bulletinLevel>
+                <comments></comments>
+                <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                <descriptors>
+                    <entry>
+                        <key>Routing Strategy</key>
+                        <value>
+                            <name>Routing Strategy</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Matching Strategy</key>
+                        <value>
+                            <name>Matching Strategy</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Character Set</key>
+                        <value>
+                            <name>Character Set</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Ignore Leading/Trailing Whitespace</key>
+                        <value>
+                            <name>Ignore Leading/Trailing Whitespace</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Ignore Case</key>
+                        <value>
+                            <name>Ignore Case</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Grouping Regular Expression</key>
+                        <value>
+                            <name>Grouping Regular Expression</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>match</key>
+                        <value>
+                            <name>match</name>
+                        </value>
+                    </entry>
+                </descriptors>
+                <executionNode>ALL</executionNode>
+                <lossTolerant>false</lossTolerant>
+                <maxBackoffPeriod>10 mins</maxBackoffPeriod>
+                <penaltyDuration>30 sec</penaltyDuration>
+                <properties>
+                    <entry>
+                        <key>Routing Strategy</key>
+                        <value>Route to each matching Property Name</value>
+                    </entry>
+                    <entry>
+                        <key>Matching Strategy</key>
+                        <value>Matches Regular Expression</value>
+                    </entry>
+                    <entry>
+                        <key>Character Set</key>
+                        <value>UTF-8</value>
+                    </entry>
+                    <entry>
+                        <key>Ignore Leading/Trailing Whitespace</key>
+                        <value>true</value>
+                    </entry>
+                    <entry>
+                        <key>Ignore Case</key>
+                        <value>false</value>
+                    </entry>
+                    <entry>
+                        <key>Grouping Regular Expression</key>
+                    </entry>
+                    <entry>
+                        <key>match</key>
+                        <value>^(.*?),(.*?),(.*?),(.*?),(.*)$</value>
+                    </entry>
+                </properties>
+                <retryCount>10</retryCount>
+                <runDurationMillis>0</runDurationMillis>
+                <schedulingPeriod>0 sec</schedulingPeriod>
+                <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                <yieldDuration>1 sec</yieldDuration>
+            </config>
+            <executionNodeRestricted>false</executionNodeRestricted>
+            <name>RouteText</name>
+            <relationships>
+                <autoTerminate>false</autoTerminate>
+                <name>match</name>
+                <retry>false</retry>
+            </relationships>
+            <relationships>
+                <autoTerminate>true</autoTerminate>
+                <name>original</name>
+                <retry>false</retry>
+            </relationships>
+            <relationships>
+                <autoTerminate>true</autoTerminate>
+                <name>unmatched</name>
+                <retry>false</retry>
+            </relationships>
+            <state>STOPPED</state>
+            <style/>
+            <type>org.apache.nifi.processors.standard.RouteText</type>
+        </processors>
+        <processors>
+            <id>e53389ac-ffe0-3e81-0000-000000000000</id>
+            <parentGroupId>daf56c04-7497-3ce5-0000-000000000000</parentGroupId>
             <position>
                 <x>0.0</x>
                 <y>0.0</y>
@@ -630,7 +1079,7 @@
                     </entry>
                     <entry>
                         <key>Remote URL</key>
-                        <value>http://10.220.173.204:8000/out500_combined+header.csv</value>
+                        <value>http://192.168.1.34:8000/out500_combined+header.csv</value>
                     </entry>
                     <entry>
                         <key>disable-http2</key>
@@ -801,233 +1250,6 @@
             <style/>
             <type>org.apache.nifi.processors.standard.InvokeHTTP</type>
         </processors>
-        <processors>
-            <id>67c77fb0-66cd-39c6-0000-000000000000</id>
-            <parentGroupId>79b28a79-9820-3793-0000-000000000000</parentGroupId>
-            <position>
-                <x>16.0</x>
-                <y>240.0</y>
-            </position>
-            <bundle>
-                <artifact>nifi-hadoop-nar</artifact>
-                <group>org.apache.nifi</group>
-                <version>1.21.0</version>
-            </bundle>
-            <config>
-                <backoffMechanism>PENALIZE_FLOWFILE</backoffMechanism>
-                <bulletinLevel>WARN</bulletinLevel>
-                <comments></comments>
-                <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
-                <descriptors>
-                    <entry>
-                        <key>Hadoop Configuration Resources</key>
-                        <value>
-                            <name>Hadoop Configuration Resources</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>kerberos-credentials-service</key>
-                        <value>
-                            <identifiesControllerService>org.apache.nifi.kerberos.KerberosCredentialsService</identifiesControllerService>
-                            <name>kerberos-credentials-service</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>kerberos-user-service</key>
-                        <value>
-                            <identifiesControllerService>org.apache.nifi.kerberos.KerberosUserService</identifiesControllerService>
-                            <name>kerberos-user-service</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>Kerberos Principal</key>
-                        <value>
-                            <name>Kerberos Principal</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>Kerberos Keytab</key>
-                        <value>
-                            <name>Kerberos Keytab</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>Kerberos Password</key>
-                        <value>
-                            <name>Kerberos Password</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>Kerberos Relogin Period</key>
-                        <value>
-                            <name>Kerberos Relogin Period</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>Additional Classpath Resources</key>
-                        <value>
-                            <name>Additional Classpath Resources</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>Directory</key>
-                        <value>
-                            <name>Directory</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>Conflict Resolution Strategy</key>
-                        <value>
-                            <name>Conflict Resolution Strategy</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>writing-strategy</key>
-                        <value>
-                            <name>writing-strategy</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>Block Size</key>
-                        <value>
-                            <name>Block Size</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>IO Buffer Size</key>
-                        <value>
-                            <name>IO Buffer Size</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>Replication</key>
-                        <value>
-                            <name>Replication</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>Permissions umask</key>
-                        <value>
-                            <name>Permissions umask</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>Remote Owner</key>
-                        <value>
-                            <name>Remote Owner</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>Remote Group</key>
-                        <value>
-                            <name>Remote Group</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>Compression codec</key>
-                        <value>
-                            <name>Compression codec</name>
-                        </value>
-                    </entry>
-                    <entry>
-                        <key>Ignore Locality</key>
-                        <value>
-                            <name>Ignore Locality</name>
-                        </value>
-                    </entry>
-                </descriptors>
-                <executionNode>ALL</executionNode>
-                <lossTolerant>false</lossTolerant>
-                <maxBackoffPeriod>10 mins</maxBackoffPeriod>
-                <penaltyDuration>30 sec</penaltyDuration>
-                <properties>
-                    <entry>
-                        <key>Hadoop Configuration Resources</key>
-                        <value>Data/hdfs-site.xml,Data/core-site.xml</value>
-                    </entry>
-                    <entry>
-                        <key>kerberos-credentials-service</key>
-                    </entry>
-                    <entry>
-                        <key>kerberos-user-service</key>
-                    </entry>
-                    <entry>
-                        <key>Kerberos Principal</key>
-                    </entry>
-                    <entry>
-                        <key>Kerberos Keytab</key>
-                    </entry>
-                    <entry>
-                        <key>Kerberos Password</key>
-                    </entry>
-                    <entry>
-                        <key>Kerberos Relogin Period</key>
-                        <value>4 hours</value>
-                    </entry>
-                    <entry>
-                        <key>Additional Classpath Resources</key>
-                    </entry>
-                    <entry>
-                        <key>Directory</key>
-                        <value>/cartellaNIFI</value>
-                    </entry>
-                    <entry>
-                        <key>Conflict Resolution Strategy</key>
-                        <value>replace</value>
-                    </entry>
-                    <entry>
-                        <key>writing-strategy</key>
-                        <value>writeAndRename</value>
-                    </entry>
-                    <entry>
-                        <key>Block Size</key>
-                    </entry>
-                    <entry>
-                        <key>IO Buffer Size</key>
-                    </entry>
-                    <entry>
-                        <key>Replication</key>
-                    </entry>
-                    <entry>
-                        <key>Permissions umask</key>
-                    </entry>
-                    <entry>
-                        <key>Remote Owner</key>
-                    </entry>
-                    <entry>
-                        <key>Remote Group</key>
-                    </entry>
-                    <entry>
-                        <key>Compression codec</key>
-                        <value>NONE</value>
-                    </entry>
-                    <entry>
-                        <key>Ignore Locality</key>
-                        <value>false</value>
-                    </entry>
-                </properties>
-                <retryCount>10</retryCount>
-                <runDurationMillis>0</runDurationMillis>
-                <schedulingPeriod>0 sec</schedulingPeriod>
-                <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
-                <yieldDuration>1 sec</yieldDuration>
-            </config>
-            <executionNodeRestricted>false</executionNodeRestricted>
-            <name>PutHDFS</name>
-            <relationships>
-                <autoTerminate>true</autoTerminate>
-                <name>failure</name>
-                <retry>false</retry>
-            </relationships>
-            <relationships>
-                <autoTerminate>true</autoTerminate>
-                <name>success</name>
-                <retry>false</retry>
-            </relationships>
-            <state>RUNNING</state>
-            <style/>
-            <type>org.apache.nifi.processors.hadoop.PutHDFS</type>
-        </processors>
     </snippet>
-    <timestamp>05/19/2023 10:28:03 UTC</timestamp>
+    <timestamp>05/20/2023 17:17:38 UTC</timestamp>
 </template>

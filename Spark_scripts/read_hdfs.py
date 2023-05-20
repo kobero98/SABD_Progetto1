@@ -23,13 +23,12 @@ def main():
     spark = SparkSession.builder.appName(AppName+"_"+str(dt_string)).getOrCreate()
     spark.sparkContext.setLogLevel("ERROR")
     logger.info("Starting spark application")
-
+    print("ciao\n")
     #do something here
     logger.info("Reading CSV File")
-    df_category = spark.read.csv("hdfs://master:54310/out500_combined+header.csv")
+    df_category = spark.read.option("header","true").csv("hdfs://master:54310/cartellaNIFI/out500_combined+header.csv")
     logger.info("Previewing CSV File Data")
     df_category.show(truncate=False)
-
     logger.info("Ending spark application")
     # end spark code
     spark.stop()

@@ -1,5 +1,6 @@
 version: "3.3"
 services:
+
 #  hdfs_master:
 #   container_name: master
 #      #build:
@@ -52,7 +53,6 @@ services:
 #      - 8443:8443
 #    networks:
 #      - hadoop_network    
-
   spark-master:
     image: cluster-apache-spark:3.0.2
     ports:
@@ -63,6 +63,8 @@ services:
       - SPARK_WORKLOAD=master
     networks:
       - hadoop_network
+    volumes:
+       - ./Spark_scripts:/opt/spark-apps
   spark-worker-a:
     image: cluster-apache-spark:3.0.2
     ports:

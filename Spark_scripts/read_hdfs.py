@@ -27,8 +27,10 @@ def main():
     #do something here
     logger.info("Reading CSV File")
     df_category = spark.read.option("header","true").csv("hdfs://master:54310/cartellaNIFI/out500_combined+header.csv")
+    print(df_category.dtypes)
+    df_category2 = df_category.filter(df_category.SecType == "E")
     logger.info("Previewing CSV File Data")
-    df_category.show(truncate=False)
+    df_category2.show(truncate=False)
     logger.info("Ending spark application")
     # end spark code
     spark.stop()

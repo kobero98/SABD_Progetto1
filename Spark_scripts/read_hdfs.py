@@ -16,7 +16,8 @@ logger.addHandler(handler)
 dt_string = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
 # change it to your app name
 AppName = "MyPySparkApp"
-
+def query1filtrer(f):
+    return True
 
 def main():
     # start spark code
@@ -27,11 +28,15 @@ def main():
 
     #do something here
     logger.info("Reading CSV File")
-    df_category = spark.read.option("header","true").csv("hdfs://master:54310/cartellaNIFI/out500_combined+header.csv")
-    df_category.createOrReplaceTempView("view1")
-    result = spark.sql("SELECT ID,count(*)  FROM view1 where SecType='E' and ID LIKE '%.FR' GROUP BY ID")
-    result.show()
-    print(result)
+    #df_category = spark.read.option("header","true").csv("hdfs://master:54310/cartellaNIFI/out500_combined+header.csv")
+    #print(df_category.dtypes)
+    rdd1 = spark.sparkContext.textFile("hdfs://master:54310/cartellaNIFI/out500_combined+header.csv").map(lambda f : f.split(sep=",")).reduce(query1filtrer)
+    x = rdd1.collect()
+    for i in x: print(i)
+    #df_category.createOrReplaceTempView("view1")
+    #result = spark.sql("SELECT *,count(*)  FROM view1 where SecType='E' and ID LIKE '%.FR' GROUP BY 'Trading date','Trading time'")
+    #result.show()
+   # print(result)
    # df_category2 = df_category.filter(df_category.SecType == "E")
    # df_category3 = df_category2.loc[df_category2["ID"].str.endswith(".FR")]
    # logger.info("Previewing CSV File Data")

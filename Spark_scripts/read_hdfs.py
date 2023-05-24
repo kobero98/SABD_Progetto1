@@ -30,7 +30,7 @@ def query1map(f):
 
 def joined_val(f):
     x=f[0].split(sep="/")
-    return x[0]+","+x[1]+","+x[2]+".FR"+","+str(f[1][0][0])+","+str(f[1][0][1])+","+str(f[1][1])
+    return x[0]+","+x[1]+","+x[2]+".FR"+","+str(f[1][0][0])+","+str(f[1][0][1])+","+str(f[1][1][0])+","+str(f[1][1][1])
 
 def main():
     #Creazione dello Spark Context
@@ -51,7 +51,7 @@ def main():
     min_val = rdd1.reduceByKey(min)
     max_val = rdd1.reduceByKey(max)
     mean_val = rdd1.combineByKey((lambda v: (v, 1)), (lambda C,v: (C[0]+v, C[1]+1)),(lambda C1,C2: (C1[0]+C2[0], C1[1]+C2[1])))\
-                   .mapValues(lambda C: C[0]/C[1])
+                   .mapValues(lambda C: [C[0]/C[1], C[1]])
     
     #Aggregazione risultati e salvataggio output su HDFS
     pars = min_val.fullOuterJoin(max_val)\

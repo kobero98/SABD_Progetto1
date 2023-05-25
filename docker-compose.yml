@@ -17,30 +17,12 @@ services:
       - hadoop_network
     depends_on:
       - hdfs_slave1
-      - hdfs_slave2
-      - hdfs_slave3
   hdfs_slave1:
     container_name: slave1
     image: matnar/hadoop
     tty: true
     ports:
       - 9864:9864
-    networks:
-      - hadoop_network
-  hdfs_slave2:
-    container_name: slave2
-    image: matnar/hadoop
-    tty: true
-    ports:
-      - 9863:9864 
-    networks:
-      - hadoop_network
-  hdfs_slave3:
-    container_name: slave3
-    image: matnar/hadoop
-    tty: true
-    ports:
-      - 9862:9864
     networks:
       - hadoop_network
   nifi:

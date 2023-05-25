@@ -3,6 +3,7 @@ from pyspark.sql.functions import col
 import sys,logging
 from datetime import datetime
 import pandas as pd
+
 # Logging configuration
 formatter = logging.Formatter('[%(asctime)s] %(levelname)s @ line %(lineno)d: %(message)s')
 handler = logging.StreamHandler(sys.stdout)
@@ -11,13 +12,12 @@ handler.setFormatter(formatter)
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 logger.addHandler(handler)
-# current time variable to be used for logging purpose
 dt_string = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
-# change it to your app name
-AppName = "MyPySparkApp"
+AppName = "Progetto 1 SABD"
 
 def query1filtrer(f):
     return f[1] == "FR" and f[2] == "E"
+
 def query1map(f):
     x=f.split(sep=",")
     app = x[0].split(".")
@@ -27,39 +27,41 @@ def query1map(f):
     else:
         y=["Nome","paese",x[1],x[2],x[4],"data/ora/ID",x[3]]
     return y
-def query1Min(f,x):
-    if f<x:
-        return f
-    else:
-        return x
-def query1Max(f,x):
-    if f>x:
-        return f
-    else:
-        return x
-def funcQ1(f):
+
+def joined_val(f):
     x=f[0].split(sep="/")
-    return [x[0],x[1],x[2]+".FR",f[1],f[3],f[2],f[4]]
+    return x[0]+","+x[1]+","+x[2]+".FR"+","+str(f[1][0][0])+","+str(f[1][0][1])+","+str(f[1][1][0])+","+str(f[1][1][1])
+
 def main():
-    # start spark code
+    #Creazione dello Spark Context
     spark = SparkSession.builder.appName(AppName+"_"+str(dt_string)).getOrCreate()
     spark.sparkContext.setLogLevel("ERROR")
     logger.info("Starting spark application")
     print("ciao\n")
-    #do something here
+
+    #Lettura del dataset da HDFS
     logger.info("Reading CSV File")
-    rdd1 = spark.sparkContext.textFile("hdfs://master:54310/cartellaNIFI/out500_combined+header.csv").map(query1map).filter(query1filtrer).map(lambda f: [f[5],f[3]]).cache()
-    minVal = rdd1.reduceByKey(query1Min)
-    maxVal = rdd1.reduceByKey(query1Max)
-    sommVal = rdd1.reduceByKey(lambda x,y:x+y)
-    countVal = rdd1.map(lambda x: [x[0],1]).reduceByKey(lambda x,y:x+y)
-    pars = minVal.fullOuterJoin(maxVal).fullOuterJoin(sommVal).fullOuterJoin(countVal).map(lambda f: [f[0],f[1][0][0][0],f[1][0][0][1],f[1][0][1]/f[1][1],f[1][1]])
-    resultQ1 = pars.map(funcQ1)
-    resultQ1.map(lambda f: f[0]+","+f[1]+","+f[2]+","+str(f[3])+","+str(f[4])+","+str(f[5])).saveAsTextFile("hdfs://master:54310/cartellaResult/Query1Result.csv") 
+    rdd1 = spark.sparkContext.textFile("hdfs://master:54310/cartellaNIFI/out500_combined+header.csv")\
+                             .map(query1map)\
+                             .filter(query1filtrer)\
+                             .map(lambda f: [f[5],f[3]])\
+                             .cache()
+    
+    #Calcolo minimo massimo e media
+    min_val = rdd1.reduceByKey(min)
+    max_val = rdd1.reduceByKey(max)
+    mean_val = rdd1.combineByKey((lambda v: (v, 1)), (lambda C,v: (C[0]+v, C[1]+1)),(lambda C1,C2: (C1[0]+C2[0], C1[1]+C2[1])))\
+                   .mapValues(lambda C: [C[0]/C[1], C[1]])
+    
+    #Aggregazione risultati e salvataggio output su HDFS
+    pars = min_val.fullOuterJoin(max_val)\
+                  .fullOuterJoin(mean_val)\
+                  .map(joined_val)\
+                  .saveAsTextFile("hdfs://master:54310/cartellaResult/Query1Result") 
+    
     spark.stop()
     return None
 
-# Starting point for PySpark
 if __name__ == '__main__':
     main()
     sys.exit()

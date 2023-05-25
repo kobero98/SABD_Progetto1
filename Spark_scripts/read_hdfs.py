@@ -48,8 +48,6 @@ def main():
     print("ciao\n")
     #do something here
     logger.info("Reading CSV File")
-    #df_category = spark.read.option("header","true").csv("hdfs://master:54310/cartellaNIFI/out500_combined+header.csv")
-    #print(df_category.dtypes)
     rdd1 = spark.sparkContext.textFile("hdfs://master:54310/cartellaNIFI/out500_combined+header.csv").map(query1map).filter(query1filtrer).map(lambda f: [f[5],f[3]]).cache()
     minVal = rdd1.reduceByKey(query1Min)
     maxVal = rdd1.reduceByKey(query1Max)
@@ -58,19 +56,6 @@ def main():
     pars = minVal.fullOuterJoin(maxVal).fullOuterJoin(sommVal).fullOuterJoin(countVal).map(lambda f: [f[0],f[1][0][0][0],f[1][0][0][1],f[1][0][1]/f[1][1],f[1][1]])
     resultQ1 = pars.map(funcQ1)
     resultQ1.map(lambda f: f[0]+","+f[1]+","+f[2]+","+str(f[3])+","+str(f[4])+","+str(f[5])).saveAsTextFile("hdfs://master:54310/cartellaResult/Query1Result.csv") 
-    
-    # x = rdd1.collect()
-    #for i in x: print(i)
-    #df_category.createOrReplaceTempView("view1")
-    #result = spark.sql("SELECT *,count(*)  FROM view1 where SecType='E' and ID LIKE '%.FR' GROUP BY 'Trading date','Trading time'")
-    #result.show()
-    # print(result)
-    # df_category2 = df_category.filter(df_category.SecType == "E")
-    # df_category3 = df_category2.loc[df_category2["ID"].str.endswith(".FR")]
-    # logger.info("Previewing CSV File Data")
-    # df_category3.show(truncate=False)
-    # logger.info("Ending spark application")
-    # end spark code
     spark.stop()
     return None
 

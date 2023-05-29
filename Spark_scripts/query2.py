@@ -1,5 +1,5 @@
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col
+from pyspark.sql.functions import col,explode
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType, FloatType
 import sys,logging
 from datetime import datetime
@@ -38,7 +38,7 @@ def query2Map(f):
         y=["",x[1],x[2],x[3],x[4]]
     return y
 def funcfilt(f):
-    if f[0] == "" or f[1] == "" or f[3] == "" or f[4] == "":
+    if f[0] == "" or f[1] == "" or   "" or  f[3] == "00:00:00.000" or f[4] == "":
         return False
     return True
 def calcoloLista(f):
@@ -61,7 +61,7 @@ def funzioneTrasformazioneFinale(f):
         else:
             z=i[1]
     return [f[0],len(newArray),newArray]
-def FinalQuery(f):
+def statisticheFinali(f):
     somma=0.0
     sommaQuadra=0.0
     app=f[0].split("/")
@@ -74,30 +74,37 @@ def FinalQuery(f):
     return [app[0],app[1],media,dev,f[1]]
 def TopandDown(f):
     x= sorted(list(f[1]),key=lambda f:f[1])
-    Down = x[:5] 
     Top = x[-5:]
-    return [x[0],Top,Down]
-
+    return [x[0],Top]
 def main():
     # start spark code
     spark = SparkSession.builder.appName(AppName+"_"+str(dt_string)).getOrCreate()
     spark.sparkContext.setLogLevel("ERROR")
     logger.info("Starting spark application")
-    #do something here
+
+
     logger.info("Reading CSV File")
     rdd1 = spark.sparkContext.textFile("hdfs://master:54310/cartellaNIFI/out500_combined+header.csv").map(query2Map).filter(funcfilt).cache()
-    rdd2 = rdd1.groupBy(lambda f: f[4]+"/"+f[3].split(sep=":")[0]+"/"+f[0]).map(calcoloLista).map(cambioChiave).groupByKey().map(funzioneTrasformazioneFinale).filter(lambda f: f[1]!=0).cache()
-    resultQ2 = rdd2.map(FinalQuery)
-    #resultQ2DF = resultQ2.toDF(schema)
-    #resultQ2DF.coalesce(1).write.csv("hdfs://master:54310/cartellaResult/Query2Result", mode="overwrite")
-    #posso migliorarlo, credo!
-    rdd3 = rdd2.map(lambda f:[f[0],max(f[2])]).groupBy(lambda f : f[0].split(sep="/")[0]).map(TopandDown).sortBy(keyfunc= lambda f:f[0])
-    l=[]
-    for i in rdd3.collect():
-        for j in i[1]:
-            l.append([i[0],j])
-    print(l)
-    #rdd4 = rdd2.map(lambda f:[f[0],min(f[2])]).groupBy(lambda f : f[0].split(sep="/")[0]).map(TopandDown)
+    rdd2 = rdd1.groupBy(lambda f: f[4]+"/"+f[3].split(sep=":")[0]+"/"+f[0])\
+                .map(calcoloLista)\
+                .map(cambioChiave)\
+                .groupByKey()\
+                .map(funzioneTrasformazioneFinale)\
+                .filter(lambda f: f[1]!=0)\
+                .map(statisticheFinali)\
+                .groupBy(lambda f:f[0])\
+                .cache()
+    
+    bot = rdd2.map(lambda f: [f[0],sorted(f[1],key=lambda f:f[2])[:5]])\
+                .toDF(schema=["Date","col2"]).withColumn("col2",explode("col2"))
+    resultBot = bot.select(bot["Date"],bot["col2"][1].alias("ID"),bot["col2"][2].alias("Mean"),bot["col2"][3].alias("Dev.std"),bot["col2"][4].alias("Count"))
+    top = rdd2.map(lambda f: [f[0],sorted(f[1],key=lambda f:f[2],reverse=True)[:5]])\
+                .toDF(schema=["Date","col2"]).withColumn("col2",explode("col2"))
+    
+    resultTop = top.select(top["Date"],top["col2"][1].alias("ID"),top["col2"][2].alias("Mean"),top["col2"][3].alias("Dev.std"),top["col2"][4].alias("Count"))
+    resultTop.show()
+    resultBot.coalesce(1).write.csv("hdfs://master:54310/cartellaResult/Query2ResultBot", header=True, mode="overwrite")
+    resultTop.coalesce(1).write.csv("hdfs://master:54310/cartellaResult/Query2ResultTop", header=True, mode="overwrite")
     spark.stop()
     return None
 

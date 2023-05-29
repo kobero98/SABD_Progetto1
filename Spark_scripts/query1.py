@@ -1,5 +1,7 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col
+from pyspark.sql.types import StructType, StructField, StringType, FloatType, IntegerType, DateType
+
 import sys,logging
 from datetime import datetime
 import pandas as pd
@@ -15,10 +17,11 @@ logger.addHandler(handler)
 dt_string = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
 AppName = "Progetto 1 SABD"
 
+#TODO: Si può sostituire con una lambda
 def query1filtrer(f):
     return f[1] == "FR" and f[2] == "E"
 
-def query1map(f):
+def parse_map(f):
     x=f.split(sep=",")
     app = x[0].split(".")
     hour = x[3].split(sep=":")
@@ -30,7 +33,7 @@ def query1map(f):
 
 def joined_val(f):
     x=f[0].split(sep="/")
-    return x[0]+","+x[1]+","+x[2]+".FR"+","+str(f[1][0][0])+","+str(f[1][0][1])+","+str(f[1][1][0])+","+str(f[1][1][1])
+    return [x[0], x[1], x[2]+".FR", str(f[1][0][0]), str(f[1][0][1]), str(f[1][1][0]), str(f[1][1][1])]
 
 def main():
     #Creazione dello Spark Context
@@ -42,7 +45,7 @@ def main():
     #Lettura del dataset da HDFS
     logger.info("Reading CSV File")
     rdd1 = spark.sparkContext.textFile("hdfs://master:54310/cartellaNIFI/out500_combined+header.csv")\
-                             .map(query1map)\
+                             .map(parse_map)\
                              .filter(query1filtrer)\
                              .map(lambda f: [f[5],f[3]])\
                              .cache()
@@ -54,10 +57,24 @@ def main():
                    .mapValues(lambda C: [C[0]/C[1], C[1]])
     
     #Aggregazione risultati e salvataggio output su HDFS
-    pars = min_val.fullOuterJoin(max_val)\
-                  .fullOuterJoin(mean_val)\
-                  .map(joined_val)\
-                  .saveAsTextFile("hdfs://master:54310/cartellaResult/Query1Result") 
+    result = min_val.fullOuterJoin(max_val)\
+           .fullOuterJoin(mean_val)\
+           .map(joined_val)
+    #Salvataggio sull'HDFS
+    df_schema = StructType([       
+                            StructField('data', StringType(), True),
+                            StructField('ora', StringType(), True),
+                            StructField('azione', StringType(), True),
+                            StructField('minimo', StringType(), True),
+                            StructField('massimo', StringType(), True),
+                            StructField('media', StringType(), True),
+                            StructField('counter', StringType(), True),
+                            ])
+    result.toDF(df_schema)\
+         .coalesce(1)\
+         .write.mode('overwrite')\
+         .option('header','true')\
+         .csv("hdfs://master:54310/cartellaResult/Query1Result")
     
     spark.stop()
     return None

@@ -1,6 +1,7 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col,explode
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType, FloatType
+from pathlib import Path
 import sys,logging
 from datetime import datetime
 import pandas as pd
@@ -77,6 +78,8 @@ def TopandDown(f):
     Top = x[-5:]
     return [x[0],Top]
 def main():
+    hdfs_dir = "/cartellaResult/Query2ResultBot"
+
     # start spark code
     spark = SparkSession.builder.appName(AppName+"_"+str(dt_string)).getOrCreate()
     spark.sparkContext.setLogLevel("ERROR")
@@ -105,6 +108,20 @@ def main():
     resultTop.show()
     resultBot.coalesce(1).write.csv("hdfs://master:54310/cartellaResult/Query2ResultBot", header=True, mode="overwrite")
     resultTop.coalesce(1).write.csv("hdfs://master:54310/cartellaResult/Query2ResultTop", header=True, mode="overwrite")
+    fs = spark._jvm.org.apache.hadoop.fs.FileSystem.get(spark._jsc.hadoopConfiguration())
+
+    #list files in the directory
+
+    list_status = fs.listStatus(spark._jvm.org.apache.hadoop.fs.Path(hdfs_dir))
+
+    #filter name of the file starts with part-
+
+    file_name = [file.getPath().getName() for file in list_status if file.getPath().getName().startswith('part-')][0]
+
+    #rename the file
+
+    fs.rename(Path(hdfs_dir+''+file_name),Path(hdfs_dir+''+"Query2.csv"))
+
     spark.stop()
     return None
 

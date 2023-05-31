@@ -30,7 +30,6 @@ def main():
     spark = SparkSession.builder.appName(AppName+"_"+str(dt_string)).getOrCreate()
     spark.sparkContext.setLogLevel("ERROR")
     logger.info("Starting spark application")
-    print("ciao\n")
 
     #Lettura del dataset da HDFS e trasformazione in dataframe
     logger.info("Reading CSV File")
@@ -39,9 +38,9 @@ def main():
                            .toDF(schema=["data", "borsa", "valore"])
     
     #Calcolo percentili e eventi considerati con i dataframe
-    df = df.groupBy(['data', 'borsa']).agg(expr("percentile_approx(valore, 0.25)").alias('25th Percentile'),\
-                                           expr("percentile_approx(valore, 0.50)").alias('50th Percentile'),\
-                                           expr("percentile_approx(valore, 0.75)").alias('75th Percentile'),\
+    df = df.groupBy(['data', 'borsa']).agg(expr("percentile_approx(valore, 0.25)").alias('Percentile25th'),\
+                                           expr("percentile_approx(valore, 0.50)").alias('Percentile50th'),\
+                                           expr("percentile_approx(valore, 0.75)").alias('Percentile75th'),\
                                            count('data'))\
                                       .sort(['data'])\
                                       .coalesce(1).write.mode('overwrite').option('header','true').csv("hdfs://master:54310/cartellaResult/Query3Result")

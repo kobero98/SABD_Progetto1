@@ -9,10 +9,10 @@ import pandas as pd
 # Logging configuration
 formatter = logging.Formatter('[%(asctime)s] %(levelname)s @ line %(lineno)d: %(message)s')
 handler = logging.StreamHandler(sys.stdout)
-handler.setLevel(logging.INFO)
+handler.setLevel(logging.ERROR)
 handler.setFormatter(formatter)
 logger = logging.getLogger()
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.ERROR)
 logger.addHandler(handler)
 dt_string = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
 AppName = "Progetto 1 SABD"
@@ -40,7 +40,6 @@ def main():
     spark = SparkSession.builder.appName(AppName+"_"+str(dt_string)).getOrCreate()
     spark.sparkContext.setLogLevel("ERROR")
     logger.info("Starting spark application")
-    print("ciao\n")
 
     #Lettura del dataset da HDFS
     logger.info("Reading CSV File")

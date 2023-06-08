@@ -35,12 +35,12 @@ def main():
     #calcolare variazione oraria poi per giornata calcolare media e varianza delle variazioni
     #prendi migliori e peggiori 5
     spark.sql("WITH splitHourTable(id, date, hour, residueTime, value) AS (SELECT id, date, SUBSTR(time, 1, 2), SUBSTR(time, 4, 9), value FROM trading),\
-                    maxMin(id, date, variazione) AS (SELECT id, date, MAX(value)-MIN(value) FROM splitHourTable \
-                                                     GROUP BY id, date, hour \
-                                                     ORDER BY id, date, hour),\
-                    stat(id, date, stddev, mean) AS (SELECT id, date, STDDEV(variazione) AS standardDev, AVG(variazione) FROM maxMin GROUP BY id, date)\
-               SELECT * FROM stat ORDER BY mean ASC LIMIT 5\
-              ")\
+                    maxMin(id, date, hour, residueTime, val) AS (SELECT id, date, hour, MAX(residueTime), AVG(value) FROM splitHourTable GROUP BY id, date, hour),\
+                    variazione(id, date, time1, time2, var) AS (SELECT t1.id, t1.date, t1.hour, t2.hour, t2.val-t1.val FROM maxMin t1\
+                                                  JOIN maxMin t2 ON t1.date = t2.date AND t1.id = t2.id AND t2.hour = t1.hour+1\
+                                                  WHERE t1.hour<>t2.hour AND t1.residueTime<>t2.residueTime),\
+                    final(id, data, dev, media, eventi) AS (SELECT id, date, STDDEV(var), AVG(var), COUNT(var) FROM variazione GROUP BY id, date ORDER BY date, media ASC)\
+                    SELECT id, data, dev, media, eventi FROM final OVER(PARTITION BY data ORDER BY media ASC LIMIT 5)")\
          .show(10)
     
     spark.stop()

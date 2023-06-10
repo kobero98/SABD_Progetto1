@@ -39,6 +39,7 @@ def funzioneTrasformazioneFinale(f):
     newArray=[]
     z=-1    
     c=0
+    sorted(f[1],key=lambda f:f[0])
     for i in f[1]:
         c=c+1
         if z!= -1:
@@ -71,8 +72,8 @@ def main():
     logger.info("Reading CSV File")
     #il primo rdd viene creato a partire dal file che trova sull hdfs e lo converte in un formato utilizzabile filtrando le possibili righe nulle
     rdd1 = spark.sparkContext.textFile("hdfs://master:54310/cartellaNIFI/out500_combined+header.csv")\
-                             .map(query2Map)\
-                             .filter(lambda f: not (f[0]=="" or f[1]=="" or  f[3]=="" or f[4]==""))
+                             .map(query2Map)
+
     rdd2 = rdd1.groupBy(lambda f: f[4]+"/"+f[3].split(sep=":")[0]+"/"+f[0])\
                 .map(calcoloLista)\
                 .map(cambioChiave)\
@@ -85,10 +86,12 @@ def main():
     bot = rdd2.map(lambda f: [f[0],sorted(f[1],key=lambda f:f[2])[:5]])\
                 .toDF(schema=["Date","col2"]).withColumn("col2",explode("col2"))
     resultBot = bot.select(bot["Date"],bot["col2"][1].alias("ID"),bot["col2"][2].alias("Mean"),bot["col2"][3].alias("StdDev"),bot["col2"][4].alias("Count"))
+    
     top = rdd2.map(lambda f: [f[0],sorted(f[1],key=lambda f:f[2],reverse=True)[:5]])\
                 .toDF(schema=["Date","col2"]).withColumn("col2",explode("col2"))
     resultTop = top.select(top["Date"],top["col2"][1].alias("ID"),top["col2"][2].alias("Mean"),top["col2"][3].alias("StdDev"),top["col2"][4].alias("Count"))
-    resultBot.coalesce(1).write.csv("hdfs://master:54310"+"/cartellaResult/Query2ResultBot", header=True, mode="overwrite")
+    
+    resultBot.coalesce(1).write.csv("hdfs://master:54310/cartellaResult/Query2ResultBot", header=True, mode="overwrite")
     resultTop.coalesce(1).write.csv("hdfs://master:54310/cartellaResult/Query2ResultTop", header=True, mode="overwrite")
     spark.stop()
     return None

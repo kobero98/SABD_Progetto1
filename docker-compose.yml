@@ -90,13 +90,25 @@ services:
       - hadoop_network
   grafana:
     container_name: grafana
-    build:
-      dockerfile: ./DockerFile/Grafana/Dockerfile 
+    image: grafkob
+    tty: true
     ports:
       - 3000:3000
+#    volumes:
+#      - ./grafana_data:/var/lib/grafana
+    networks:
+      - hadoop_network
+  simplehttp:
+    container_name: simple
+    hostname: simple
+    build:
+      context: .
+      dockerfile: ./DockerFile/SimpleHTTPServer/Dockerfile
+    tty: true
     volumes:
-      - ./grafana_data:/var/lib/grafana
-    restart: always
+      - ./Result:/home/Result
+    depends_on:
+      - grafana
     networks:
       - hadoop_network
 networks:

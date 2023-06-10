@@ -1,0 +1,27 @@
+# config file version
+apiVersion: 1
+
+# list of datasources to insert/update
+datasources:
+    - name: Query1
+      type: marcusolsson-csv-datasource
+      isDefault: true
+      editable: true
+      url: http://172.17.0.1:8000/Result/Query1.csv
+      jsonData:
+        storage: http
+    - name: Query2top
+      type: marcusolsson-csv-datasource
+      isDefault: true
+      editable: true
+      url: http://172.17.0.1:8000/Result/Query2Top.csv
+      jsonData:
+        storage: http
+    - name: Query2Bot
+      type: marcusolsson-csv-datasource
+      isDefault: true
+      editable: true
+      url: http://172.17.0.1:8000/Result/Query2Bot.csv
+      jsonData:
+        storage: http
+    

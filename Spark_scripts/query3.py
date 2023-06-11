@@ -1,3 +1,4 @@
+from operator import itemgetter
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import expr, count
 import sys,logging
@@ -20,15 +21,15 @@ def parse_map(f):
     return [x[4]+'.'+x[0], x[3], x[2]]
 
 def variazione(f):
-    daily_events = list(f[1])
-    var =float(daily_events[len(daily_events)-1][2])-float(daily_events[0][2])
+    daily_events = sorted(list(f[1]), key=itemgetter(1))
+    var = float(daily_events[len(daily_events)-1][2])-float(daily_events[0][2])
     splitted = f[0].split(sep='.')
-    return [splitted[0]+'_'+splitted[2], var, len(daily_events)]
+    return [splitted[0]+'_'+splitted[2], var, 2]
 
 def percentili(f):
     count = 0
     splitted = f[0].split(sep = '_')
-    entry = list(f[1])
+    entry = sorted(list(f[1]), key=itemgetter(1))
     entry_size = len(f[1]) 
     for i in entry:
         count += i[2]
@@ -44,15 +45,14 @@ def main():
     #Lettura del dataset da HDFS e trasformazione in dataframe
     logger.info("Reading CSV File")
 
-    #si crea l'rdd con [data.azione, ora, valore], si ordina per orario, si raggruppa per data.azione, 
-    #si fa la map che calcola la variazione di prezzo per azione per giorno ed ha come output [data_borsa, variazione],
-    #si ordina per variazione di prezzo, si ragruppa per data_borsa 
+    #si crea l'rdd con [data.azione, ora, valore], si raggruppa per data.azione, 
+    #si fa la map che calcola la variazione di prezzo per azione per giorno ed ha come output [data_borsa, variazione, count],
+    #si ragruppa per data_borsa, si calcolano i percentili
     df = spark.sparkContext.textFile("hdfs://master:54310/cartellaNIFI/out500_combined+header.csv")\
                            .map(parse_map)\
-                           .sortBy(lambda f:f[1])\
                            .groupBy(lambda f:f[0])\
+                           .filter(lambda f:len(f[1])>1)\
                            .map(variazione)\
-                           .sortBy(lambda f:f[1])\
                            .groupBy(lambda f:f[0])\
                            .map(percentili)\
                            .toDF(schema=["Data","Borsa", "precentile_25th", "percentile_50th", "percentile_75th", "Eventi"])\

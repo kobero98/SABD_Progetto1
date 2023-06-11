@@ -64,7 +64,6 @@ def statisticheFinali(f):
 def main():
     hdfs_dir = "/cartellaResult/Query2ResultBot/"
                 
-
     # start spark code
     spark = SparkSession.builder.appName(AppName+"_"+str(dt_string)).getOrCreate()
     spark.sparkContext.setLogLevel("ERROR")

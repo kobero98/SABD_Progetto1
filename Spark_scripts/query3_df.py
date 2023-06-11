@@ -1,3 +1,4 @@
+from operator import itemgetter
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import expr, count
 import sys,logging
@@ -17,12 +18,14 @@ AppName = "Progetto 1 SABD"
 
 def parse_map(f):
     x=f.split(sep=",")
-    app = x[0].split(".")
-    if (len(app)>1):
-        y=[x[4], app[1], x[2]]
-    else:
-        y=[x[4],x[0],"paese"]
-    return y
+    return [x[4]+'.'+x[0], x[3], x[2]]
+
+def variazione(f):
+    daily_events = sorted(list(f[1]), key=itemgetter(1))
+    var = float(daily_events[len(daily_events)-1][2])-float(daily_events[0][2])
+    splitted = f[0].split(sep='.')
+    return [splitted[0], splitted[2], var, 2]
+
 
 def main():
 
@@ -35,14 +38,16 @@ def main():
     logger.info("Reading CSV File")
     df = spark.sparkContext.textFile("hdfs://master:54310/cartellaNIFI/out500_combined+header.csv")\
                            .map(parse_map)\
-                           .toDF(schema=["data", "borsa", "valore"])
+                           .groupBy(lambda f:f[0])\
+                           .filter(lambda f:len(f[1])>1)\
+                           .map(variazione)\
+                           .toDF(schema=["data", "borsa", "valore", "count"])
     
     #Calcolo percentili e eventi considerati con i dataframe
     df = df.groupBy(['data', 'borsa']).agg(expr("percentile_approx(valore, 0.25)").alias('Percentile25th'),\
                                            expr("percentile_approx(valore, 0.50)").alias('Percentile50th'),\
                                            expr("percentile_approx(valore, 0.75)").alias('Percentile75th'),\
-                                           count('data'))\
-                                      .sort(['data'])\
+                                           expr("sum(count) as total_count").alias('total_count'))\
                                       .coalesce(1).write.mode('overwrite').option('header','true').csv("hdfs://master:54310/cartellaResult/Query3Result")
                                      
     #pd.DataFrame(df.collect()).to_csv("hdfs://master:54310/cartellaResult/Query3Result", header=True)

@@ -46,7 +46,7 @@ def main():
                                                   ORDER BY var DESC)\
                SELECT RIGHT(id, 2) AS mercato, date, percentile_approx(var, 0.25) AS percentile25, percentile_approx(var, 0.50) AS percentile50, percentile_approx(var, 0.75) AS percentile75\
                FROM variazione GROUP BY RIGHT(id, 2), date")\
-         .show(10)
+         .coalesce(1).write.mode('overwrite').option('header','true').csv("hdfs://master:54310/cartellaResult/Query3SqlResult")
    
     
     spark.stop()

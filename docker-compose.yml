@@ -50,11 +50,11 @@ services:
     volumes:
        - ./Spark_scripts:/opt/spark-apps
   spark-worker-a:
-    container_name: spark_worker
+  #  container_name: spark_worker
     image: cluster-apache-spark:3.0.2
-    ports:
-      - "9091:8080"
-      - "7000:7000"
+  #  ports:
+  #    - "9091:8080"
+  #    - "7000:7000"
     depends_on:
       - spark-master
     environment:
@@ -106,7 +106,7 @@ services:
       dockerfile: ./DockerFile/SimpleHTTPServer/Dockerfile
     tty: true
     volumes:
-      - ./Result:/home/Result
+      - ./Results:/home/Result
     depends_on:
       - grafana
     networks:

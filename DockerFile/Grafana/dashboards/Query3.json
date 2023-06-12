@@ -18,7 +18,6 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 3,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -219,7 +218,7 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 12,
+        "w": 24,
         "x": 0,
         "y": 8
       },
@@ -310,135 +309,9 @@
         }
       ],
       "type": "state-timeline"
-    },
-    {
-      "datasource": {
-        "type": "marcusolsson-csv-datasource",
-        "uid": "P86744288B2EC5C18"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "fillOpacity": 71,
-            "lineWidth": 5,
-            "spanNulls": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "percentage",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 8
-      },
-      "id": 3,
-      "options": {
-        "alignValue": "center",
-        "legend": {
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "mergeValues": false,
-        "rowHeight": 0.72,
-        "showValue": "auto",
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "marcusolsson-csv-datasource",
-            "uid": "P86744288B2EC5C18"
-          },
-          "decimalSeparator": ".",
-          "delimiter": ",",
-          "header": true,
-          "ignoreUnknown": false,
-          "refId": "A",
-          "schema": [
-            {
-              "name": "",
-              "type": "string"
-            }
-          ],
-          "skipRows": 0
-        }
-      ],
-      "title": "NL State timeline",
-      "transformations": [
-        {
-          "id": "convertFieldType",
-          "options": {
-            "conversions": [
-              {
-                "dateFormat": "DD-MM-YYYY",
-                "destinationType": "time",
-                "targetField": "Data"
-              },
-              {
-                "destinationType": "number",
-                "targetField": "precentile_25th"
-              },
-              {
-                "destinationType": "number",
-                "targetField": "percentile_50th"
-              },
-              {
-                "destinationType": "number",
-                "targetField": "Eventi"
-              },
-              {
-                "destinationType": "number",
-                "targetField": "percentile_75th"
-              }
-            ],
-            "fields": {}
-          }
-        },
-        {
-          "id": "filterByValue",
-          "options": {
-            "filters": [
-              {
-                "config": {
-                  "id": "equal",
-                  "options": {
-                    "value": "NL"
-                  }
-                },
-                "fieldName": "Borsa"
-              }
-            ],
-            "match": "any",
-            "type": "include"
-          }
-        }
-      ],
-      "type": "state-timeline"
     }
   ],
-  "refresh": false,
+  "refresh": "",
   "schemaVersion": 38,
   "style": "dark",
   "tags": [],

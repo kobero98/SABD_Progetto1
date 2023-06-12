@@ -34,14 +34,25 @@ def main():
                       .createOrReplaceTempView("trading")
     #calcolare variazione oraria poi per giornata calcolare media e varianza delle variazioni
     #prendi migliori e peggiori 5
-    spark.sql("WITH splitHourTable(id, date, hour, residueTime, value) AS (SELECT id, date, SUBSTR(time, 1, 2), SUBSTR(time, 4, 9), value FROM trading),\
+    var = spark.sql("WITH splitHourTable(id, date, hour, residueTime, value) AS (SELECT id, date, SUBSTR(time, 1, 2), SUBSTR(time, 4, 9), value FROM trading),\
                     maxMin(id, date, hour, residueTime, val) AS (SELECT id, date, hour, MAX(residueTime), AVG(value) FROM splitHourTable GROUP BY id, date, hour),\
                     variazione(id, date, time1, time2, var) AS (SELECT t1.id, t1.date, t1.hour, t2.hour, t2.val-t1.val FROM maxMin t1\
                                                   JOIN maxMin t2 ON t1.date = t2.date AND t1.id = t2.id AND t2.hour = t1.hour+1\
-                                                  WHERE t1.hour<>t2.hour AND t1.residueTime<>t2.residueTime),\
-                    final(id, data, dev, media, eventi) AS (SELECT id, date, STDDEV(var), AVG(var), COUNT(var) FROM variazione GROUP BY id, date ORDER BY date, media ASC)\
-                    SELECT id, data, dev, media, eventi FROM final OVER(PARTITION BY data ORDER BY media ASC LIMIT 5)")\
-         .show(10)
+                                                  WHERE t1.hour<>t2.hour AND t1.residueTime<>t2.residueTime)\
+                    SELECT id, date, STDDEV(var) AS dev, AVG(var) AS media, COUNT(var)*2 AS eventi FROM variazione GROUP BY id, date ORDER BY date, media ASC")\
+         .cache()
+    var.createOrReplaceTempView("statistiche")
+    top = spark.sql("SELECT id, date, dev, media, eventi \
+                     FROM \
+                    (SELECT id, date, dev, media, eventi, ROW_NUMBER() OVER (PARTITION BY date ORDER BY media DESC) AS rn\
+                    FROM statistiche) AS subquery WHERE rn <= 5")\
+                .coalesce(1).write.mode('overwrite').option('header','true').csv("hdfs://master:54310/cartellaResult/Query2SqlResult")
+    bottom = spark.sql("SELECT id, date, dev, media, eventi \
+                        FROM \
+                        (SELECT id, date, dev, media, eventi, ROW_NUMBER() OVER (PARTITION BY date ORDER BY media ASC) AS rn\
+                        FROM statistiche) AS subquery WHERE rn <= 5")\
+                  .coalesce(1).write.mode('overwrite').option('header','true').csv("hdfs://master:54310/cartellaResult/Query2SqlResult")
+
     
     spark.stop()
     return None

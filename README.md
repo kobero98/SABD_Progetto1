@@ -31,4 +31,6 @@ Dopo che l'elaborazione di NIFI sia finita si dovra eseguire il secondo script a
 sh avvio_elaborazione.sh
 ```
 che permetterà l'elaborazione delle 3 query e il caricamento del Risultato nella cartella Results della directory principale.<br>
-Infine per caricare su mongoDB i risultati bisognerà riandare sulla Web Interface di NIFI 
+Infine per caricare su mongoDB i risultati bisognerà riandare sulla Web Interface di NIFI e caricare e avviare il secondo templeate.<br>
+Per visualizzare invece i risultati della Query informato grafica basterà connettersi all'indirizo http://localhost:3000 e andare sulla sezione dashboard si potranno visionare in formato grafico le query.
+
